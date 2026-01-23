@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import example from './example/sagas'; // Entra na pasta example
+import auth from './auth/sagas'; // Entra na pasta example
 
 export default function* rootSaga() {
-  return yield all([example]);
+  return yield all([auth]);
 }

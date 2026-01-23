@@ -1,11 +1,60 @@
-import React from 'react';
+import React, { act, useState } from 'react';
+import { toast } from 'react-toastify';
+import { isEmail } from 'validator';
+import { useDispatch } from 'react-redux';
+import { get } from 'lodash';
 
 import { Container } from '../../styles/GlobalStyles';
+import { Form } from './styled';
+import * as actions from '../../store/modules/auth/actions';
 
-export default function Login() {
+export default function Login(props) {
+  const dispatch = useDispatch();
+
+  const prevPath = get(props, 'location.state.prevPath', '/');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let formErrors = false;
+
+    if (!isEmail(email)) {
+      formErrors = true;
+      toast.error('E-mail invalido');
+    }
+
+    if (password.length < 5 || password.length > 55) {
+      formErrors = true;
+      toast.error('Senha deve ter de 5 a 55 caracteres');
+    }
+
+    if (formErrors) return;
+
+    dispatch(actions.loginRequest({ email, password, prevPath }));
+  };
+
   return (
     <Container>
       <h1>Login</h1>
+
+      <Form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Seu E-mail"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Sua Senha"
+        />
+        <button type="submit">Entrar</button>
+      </Form>
     </Container>
   );
 }

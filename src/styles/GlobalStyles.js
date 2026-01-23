@@ -27,6 +27,12 @@ button{
   border-radius: 7px;
   padding: 10px 20px;
   font-weight: 700;
+  color: white;
+  transition: all 300ms;
+}
+
+button:hover{
+  filter: brightness(80%);
 }
 
 a{
