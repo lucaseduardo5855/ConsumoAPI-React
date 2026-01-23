@@ -8,8 +8,8 @@ import { get } from 'lodash';
 
 function* loginRequest({ payload }) {
   try {
-    const response = yield call(axios.post, '/tokens', payload);
-    yield put(actions.loginSuccess({ ...response.data }));
+    const response = yield call(axios.post, '/tokens', payload); //yield call -> ir na API BUSCA TOKEN
+    yield put(actions.loginSuccess({ ...response.data })); // yield put -> Avisar o redux se deu boa
 
     toast.success('Você fez login');
 
@@ -32,6 +32,6 @@ function persistRehydrate({ payload }) {
 }
 
 export default all([
-  takeLatest(types.LOGIN_REQUEST, loginRequest),
-  takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
+  takeLatest(types.LOGIN_REQUEST, loginRequest), //takelatest -> ultimo clique
+  takeLatest(types.PERSIST_REHYDRATE, persistRehydrate), //boot do sistema ex
 ]);

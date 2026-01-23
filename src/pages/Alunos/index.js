@@ -7,15 +7,20 @@ import { Container } from '../../styles/GlobalStyles';
 import { AlunoContainer, ProfilePicture } from './styled';
 import axios from '../../services/axios';
 
+import Loading from '../../components/Loading';
+
 export default function Alunos() {
   //Recebe os dados da Nossa API -> seState é quem guarda e mostra a encomenda
   const [alunos, setAlunos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   //é quem busca a encomenda (os dados)
   useEffect(() => {
     async function getData() {
+      setIsLoading(true); //carregando
       const response = await axios.get('/alunos');
       setAlunos(response.data);
+      setIsLoading(false); //nao carregando
     }
 
     getData();
@@ -23,6 +28,7 @@ export default function Alunos() {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Alunos</h1>
 
       <AlunoContainer>
