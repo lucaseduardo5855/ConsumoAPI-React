@@ -20,3 +20,10 @@ export function loginFailure(payload) {
     payload,
   };
 }
+
+export function register_request(payload) {
+  return {
+    type: types.REGISTER_REQUEST,
+    payload,
+  };
+}

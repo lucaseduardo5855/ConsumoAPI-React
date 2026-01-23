@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { get } from 'lodash';
 
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
-import axios from '../../services/axios';
-import history from '../../services/history';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../store/modules/auth/actions';
 
 import Loading from '../../components/Loading';
 
 export default function Register() {
+  const dispatch = useDispatch();
+
+  //Va na memoria do navegador pega o id do suer logado
+  const id = useSelector((state) => state.auth.user.id);
+  const nomeStored = useSelector((state) => state.auth.user.nome);
+  const emailStored = useSelector((state) => state.auth.user.email);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  React.useEffect(() => {
+    if (!id) return;
+
+    setNome(nomeStored);
+    setEmail(emailStored);
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,36 +44,22 @@ export default function Register() {
       toast.error('E-mail está invalido');
     }
 
-    if (password.length < 6 || password.length > 50) {
+    if (!id && (password.length < 6 || password.length > 50)) {
       formErrors = true;
       toast.error('A senha deve ter de 6 a 50 caracteres');
     }
 
     if (formErrors) return;
 
-    try {
-      await axios.post('/users/', {
-        nome,
-        password,
-        email,
-      });
-      toast.success('Sua conta foi registrada');
-      setIsLoading(true);
-      history.push('/login'); //leva p tela de login
-    } catch (e) {
-      const errors = get(e, 'response.data.errors');
-      console.log(errors);
-
-      errors.map((error) => toast.error(error));
-      setIsLoading(false);
-    }
+    // Você só avisa o Redux: "Alguém quer se cadastrar!"
+    dispatch(actions.register_request({ nome, email, password, id })); // em vez do axios.post ele dispara esse ordem
   }
 
   // O return deve ficar fora do handleSubmit
   return (
     <Container>
       <Loading isLoading={isLoading} />
-      <h1>Crie sua conta</h1>
+      <h1>{id ? 'Editar dados' : 'Crie sua conta'}</h1>
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="nome">
@@ -90,7 +89,7 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button type="submit">Criar minha conta</button>
+        <button type="submit">{id ? 'Salvar' : 'Cria Conta'}</button>
       </Form>
     </Container>
   );
