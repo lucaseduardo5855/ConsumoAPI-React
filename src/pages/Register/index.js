@@ -22,6 +22,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  //Assim que a tela carregando e o user tiver um id(logado) preencha os inputs de nome e email automaticamente para ele n ter q digitar dnv
   React.useEffect(() => {
     if (!id) return;
 
@@ -52,7 +53,7 @@ export default function Register() {
     if (formErrors) return;
 
     // Você só avisa o Redux: "Alguém quer se cadastrar!"
-    dispatch(actions.register_request({ nome, email, password, id })); // em vez do axios.post ele dispara esse ordem
+    dispatch(actions.registerRequest({ nome, email, password, id })); // em vez do axios.post ele dispara esse ordem
   }
 
   // O return deve ficar fora do handleSubmit

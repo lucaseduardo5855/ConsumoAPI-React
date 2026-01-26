@@ -2,28 +2,49 @@ import * as types from '../types';
 
 export function loginRequest(payload) {
   return {
-    type: types.LOGIN_REQUEST, // O NOME EXATO que está no switch do reducer
+    type: types.LOGIN_REQUEST,
     payload,
   };
 }
 
 export function loginSuccess(payload) {
   return {
-    type: types.LOGIN_SUCCESS, // O NOME EXATO que está no switch do reducer
+    type: types.LOGIN_SUCCESS,
     payload,
   };
 }
 
 export function loginFailure(payload) {
   return {
-    type: types.LOGIN_FAILURE, // O NOME EXATO que está no switch do reducer
+    type: types.LOGIN_FAILURE,
     payload,
   };
 }
 
-export function register_request(payload) {
+export function registerRequest(payload) {
   return {
     type: types.REGISTER_REQUEST,
+    payload,
+  };
+}
+
+export function registerCreatedSuccess(payload) {
+  return {
+    type: types.REGISTER_CREATED_SUCCESS,
+    payload,
+  };
+}
+
+export function registerUpdatedSuccess(payload) {
+  return {
+    type: types.REGISTER_UPDATE_SUCCESS,
+    payload,
+  };
+}
+
+export function registerFailure(payload) {
+  return {
+    type: types.REGISTER_FAILURE,
     payload,
   };
 }
