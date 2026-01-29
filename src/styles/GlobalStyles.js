@@ -29,6 +29,7 @@ button{
   font-weight: 700;
   color: white;
   transition: all 300ms;
+  margin-top: 10px;
 }
 
 button:hover{

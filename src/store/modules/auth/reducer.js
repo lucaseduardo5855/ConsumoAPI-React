@@ -60,6 +60,21 @@ export default function (state = initialState, action) {
       return newState;
     }
 
+    case types.REGISTER_DELETE_REQUEST: {
+      const newState = { ...state };
+      newState.isLoading = true;
+      return newState;
+    }
+
+    case types.REGISTER_DELETE_SUCCESS: {
+      const newState = { ...state };
+      newState.isLoading = false;
+      newState.token = false;
+      newState.user = {};
+      newState.isLoggedIn = false; //usuário não está mais logado
+      return newState;
+    }
+
     default: {
       return state;
     }

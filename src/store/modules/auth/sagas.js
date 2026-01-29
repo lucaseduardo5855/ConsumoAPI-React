@@ -75,13 +75,36 @@ function* registerRequest({ payload }) {
       toast.error('Erro desconhecido');
     }
 
-    // DESCOMENTE ISSO AQUI PARA O LOADING PARAR SE DER ERRO 👇
     yield put(actions.registerFailure());
   }
 }
 
+function* registerDeleteRequest({ payload }) {
+  const { id } = payload; // mandando id do user logado
+
+  try {
+    yield call(axios.delete, `/users/`);
+    toast.success('Conta excluída com sucesso!');
+    // Dispara o SUCCESS para o Reducer limpar o estado (isLoggedIn = false)
+    yield put(actions.registerDeleteSuccess());
+    // Redireciona para login ou home
+    history.push('/login');
+  } catch (err) {
+    const status = get(err, 'response.status', 0);
+    if (status === 401) {
+      toast.error('Você precisa fazer login novamente');
+      yield put(actions.loginFailure()); // Agora usa 'yield put' corretamente
+      return history.push('/login');
+    }
+
+    // Se for outro erro
+    toast.error('Erro ao excluir conta');
+    yield put(actions.registerFailure());
+  }
+}
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
   takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
   takeLatest(types.REGISTER_REQUEST, registerRequest),
+  takeLatest(types.REGISTER_DELETE_REQUEST, registerDeleteRequest),
 ]);

@@ -48,3 +48,17 @@ export function registerFailure(payload) {
     payload,
   };
 }
+
+export function registerDeleteRequest(payload) {
+  return {
+    type: types.REGISTER_DELETE_REQUEST,
+    payload,
+  };
+}
+
+export function registerDeleteSuccess(payload) {
+  return {
+    type: types.REGISTER_DELETE_SUCCESS,
+    payload,
+  };
+}

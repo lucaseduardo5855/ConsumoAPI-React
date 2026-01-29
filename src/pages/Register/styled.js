@@ -23,5 +23,9 @@ export const Form = styled.form`
     &:focus {
       border: 1px solid ${colors.primaryColor};
     }
+
+    button.delete {
+      background-color: yellow;
+    }
   }
 `;

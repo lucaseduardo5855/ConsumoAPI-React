@@ -12,7 +12,7 @@ import Loading from '../../components/Loading';
 export default function Register() {
   const dispatch = useDispatch();
 
-  //Va na memoria do navegador pega o id do suer logado
+  //Va na memoria do navegador pega o id do user logado
   const id = useSelector((state) => state.auth.user.id);
   const nomeStored = useSelector((state) => state.auth.user.nome);
   const emailStored = useSelector((state) => state.auth.user.email);
@@ -56,6 +56,17 @@ export default function Register() {
     dispatch(actions.registerRequest({ nome, email, password, id })); // em vez do axios.post ele dispara esse ordem
   }
 
+  function handleDelete(e) {
+    e.preventDefault();
+    if (!id) return;
+    const confirm = window.confirm('Deseja realmente excluir a sua conta?');
+    if (confirm) {
+      dispatch(actions.registerDeleteRequest({ id }));
+    } else {
+      toast.info('Conta não excluida');
+    }
+  }
+
   // O return deve ficar fora do handleSubmit
   return (
     <Container>
@@ -91,6 +102,10 @@ export default function Register() {
           />
         </label>
         <button type="submit">{id ? 'Salvar' : 'Cria Conta'}</button>
+
+        <button type="button" onClick={handleDelete} className="delete">
+          Excluir Conta
+        </button>
       </Form>
     </Container>
   );
