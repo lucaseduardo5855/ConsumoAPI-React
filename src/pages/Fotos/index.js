@@ -38,6 +38,8 @@ export default function Fotos({ match }) {
   const handleChange = async (e) => {
     const file = e.target.files[0]; //pegando o arquivo selecionado
     //criar url do objeto
+
+    if (!file) return; //se nao tiver arquivo, retorna
     const fotoUrl = URL.createObjectURL(file); //criando uma url temporaria para exibir a imagem
 
     setFoto(fotoUrl); //atualizando o estado da foto para exibir a imagem selecionada
@@ -48,17 +50,14 @@ export default function Fotos({ match }) {
 
     try {
       setIsLoading(true);
-      await axios.post(`/fotos/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', //informando que o conteudo é um arquivo
-        },
-      }); //enviando a foto para o backend
+      await axios.post('/fotos/', formData); //enviando a foto para o backend
 
       toast.success('Foto enviada com sucesso');
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      const status = get(err, 'response.status', '');
+      const { status } = get(err, 'response.status', '');
+      toast.error('Erro ao enviar foto');
 
       if (status === 401) dispatch(actions.loginFailure());
     }
