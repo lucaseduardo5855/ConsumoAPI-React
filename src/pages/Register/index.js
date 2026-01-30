@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 
 import { Container } from '../../styles/GlobalStyles';
-import { Form } from './styled';
+import { Form, Overlay, ModalBox } from './styled';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/modules/auth/actions';
 
@@ -21,6 +21,7 @@ export default function Register() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   //Assim que a tela carregando e o user tiver um id(logado) preencha os inputs de nome e email automaticamente para ele n ter q digitar dnv
   React.useEffect(() => {
@@ -58,13 +59,12 @@ export default function Register() {
 
   function handleDelete(e) {
     e.preventDefault();
-    if (!id) return;
-    const confirm = window.confirm('Deseja realmente excluir a sua conta?');
-    if (confirm) {
-      dispatch(actions.registerDeleteRequest({ id }));
-    } else {
-      toast.info('Conta não excluida');
-    }
+    setShowDeleteModal(true);
+  }
+
+  function handleConfirmDelete() {
+    dispatch(actions.registerDeleteRequest({ id }));
+    setShowDeleteModal(false); // Fecha o modal após a exclusão
   }
 
   // O return deve ficar fora do handleSubmit
@@ -107,6 +107,28 @@ export default function Register() {
           Excluir Conta
         </button>
       </Form>
+
+      {showDeleteModal && (
+        <Overlay>
+          <ModalBox>
+            <h3>Deseja Realmente excluir a sua conta? </h3>
+
+            <div className="actions">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                className="cancel-btn"
+              >
+                Cancelar
+              </button>
+
+              <button type="button" onClick={handleConfirmDelete}>
+                Sim, Excluir
+              </button>
+            </div>
+          </ModalBox>
+        </Overlay>
+      )}
     </Container>
   );
 }

@@ -29,3 +29,36 @@ export const Form = styled.form`
     }
   }
 `;
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000; //ficar em cima de tudo
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ModalBox = styled.div`
+  background: #fff;
+  padding: 30px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 400px; //caixinha
+
+  h3 {
+    margin-bottom: 30px;
+  }
+
+  div {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+  }
+`;

@@ -79,9 +79,7 @@ function* registerRequest({ payload }) {
   }
 }
 
-function* registerDeleteRequest({ payload }) {
-  const { id } = payload; // mandando id do user logado
-
+function* registerDeleteRequest() {
   try {
     yield call(axios.delete, `/users/`);
     toast.success('Conta excluída com sucesso!');
